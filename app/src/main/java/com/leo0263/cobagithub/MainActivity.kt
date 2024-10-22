@@ -1,5 +1,6 @@
 package com.leo0263.cobagithub
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -7,18 +8,28 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.leo0263.cobagithub.network.ApolloClientInstance
 import com.leo0263.cobagithub.network.GitHubServiceImpl
 import com.leo0263.cobagithub.ui.theme.CobaGithubTheme
+import com.leo0263.cobagithub.ui.theme.bottomnav.BottomNavItem
+import com.leo0263.cobagithub.ui.theme.bottomnav.BottomNavigationBarView
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,30 +51,31 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            // bottom navigation item initialization
+            val homeTab = BottomNavItem(title = "Home", normalIcon = Icons.Default.Home, selectedIcon = Icons.Filled.Home)
+            val searchTab = BottomNavItem(title = "Search", normalIcon = Icons.Default.Search, selectedIcon = Icons.Filled.Search)
+            val favoritesTab = BottomNavItem(title = "Favorites", normalIcon = Icons.Default.Favorite, selectedIcon = Icons.Filled.Favorite)
+            val bottomNavItems = listOf(homeTab, searchTab, favoritesTab)
+            val navController = rememberNavController()
+
             CobaGithubTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(
+                    bottomBar = { BottomNavigationBarView(bottomNavItems, navController) },
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    NavHost(navController = navController, startDestination = homeTab.title, Modifier.padding(innerPadding)) {
+                        composable(homeTab.title) {
+                            Text(homeTab.title)
+                        }
+                        composable(searchTab.title) {
+                            Text(searchTab.title)
+                        }
+                        composable(favoritesTab.title) {
+                            Text(favoritesTab.title)
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CobaGithubTheme {
-        Greeting("Android")
     }
 }
