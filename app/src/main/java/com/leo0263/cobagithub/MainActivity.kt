@@ -14,9 +14,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,8 +22,8 @@ import androidx.navigation.compose.rememberNavController
 import com.leo0263.cobagithub.network.ApolloClientInstance
 import com.leo0263.cobagithub.network.GitHubServiceImpl
 import com.leo0263.cobagithub.ui.theme.CobaGithubTheme
-import com.leo0263.cobagithub.ui.theme.bottomnav.BottomNavItem
-import com.leo0263.cobagithub.ui.theme.bottomnav.BottomNavigationBarView
+import com.leo0263.cobagithub.ui.bottomnav.BottomNavItem
+import com.leo0263.cobagithub.ui.bottomnav.BottomNavigationBarView
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

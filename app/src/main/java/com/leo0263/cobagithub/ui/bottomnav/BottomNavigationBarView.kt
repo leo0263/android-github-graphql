@@ -1,4 +1,4 @@
-package com.leo0263.cobagithub.ui.theme.bottomnav
+package com.leo0263.cobagithub.ui.bottomnav
 
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem

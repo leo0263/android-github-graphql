@@ -1,4 +1,4 @@
-package com.leo0263.cobagithub.ui.theme.bottomnav
+package com.leo0263.cobagithub.ui.bottomnav
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
