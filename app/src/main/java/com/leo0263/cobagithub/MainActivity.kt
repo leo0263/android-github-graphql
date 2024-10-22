@@ -19,33 +19,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.leo0263.cobagithub.helper.UserRepository
 import com.leo0263.cobagithub.network.ApolloClientInstance
 import com.leo0263.cobagithub.network.GitHubServiceImpl
 import com.leo0263.cobagithub.ui.theme.CobaGithubTheme
 import com.leo0263.cobagithub.ui.bottomnav.BottomNavItem
 import com.leo0263.cobagithub.ui.bottomnav.BottomNavigationBarView
+import com.leo0263.cobagithub.ui.home.HomeScreen
+import com.leo0263.cobagithub.ui.home.HomeViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val apolloClient = ApolloClientInstance.getInstance()
-        val githubService = GitHubServiceImpl(apolloClient)
-
-        // debug: try the graphQL connection
-        lifecycleScope.launch {
-            try {
-                val response = githubService.fetchUsers("leo0263", null)
-                val listOfUsers =
-                    response.data?.search?.edges?.mapNotNull { it?.node?.onUser } ?: emptyList()
-                val fetchedName = listOfUsers.getOrNull(0)?.name ?: "empty"
-                Log.d("dangdut", fetchedName)
-            } catch (e: Exception) {
-                Log.e("Exception", "Error fetching users: ${e.message}")
-            }
-        }
 
         enableEdgeToEdge()
         setContent {
@@ -57,20 +44,17 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             CobaGithubTheme {
+                val userRepository = UserRepository(this.application)
+                val homeViewModel = HomeViewModel(userRepository)
+
                 Scaffold(
                     bottomBar = { BottomNavigationBarView(bottomNavItems, navController) },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
                     NavHost(navController = navController, startDestination = homeTab.title, Modifier.padding(innerPadding)) {
-                        composable(homeTab.title) {
-                            Text(homeTab.title)
-                        }
-                        composable(searchTab.title) {
-                            Text(searchTab.title)
-                        }
-                        composable(favoritesTab.title) {
-                            Text(favoritesTab.title)
-                        }
+                        composable(homeTab.title) { HomeScreen(homeViewModel, navController) }
+                        composable(searchTab.title) { Text(searchTab.title) } // TODO: create search view
+                        composable(favoritesTab.title) { Text(favoritesTab.title) } // TODO: create favorite view
                     }
                 }
             }

@@ -1,0 +1,22 @@
+query UserDetail($login:String!){
+    repositoryOwner(login: $login) {
+        ... on User {
+            id
+            avatarUrl
+            name
+            login
+            bio
+            company
+            location
+            starredRepositories(first:10){
+                totalCount
+            }
+            followers(first:10){
+                totalCount
+            }
+            following(first:10){
+                totalCount
+            }
+        }
+    }
+}

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.apollo)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -61,6 +62,9 @@ dependencies {
 
     implementation(libs.apollo.runtime)
     implementation(libs.navigation.compose)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
 }
 
 apollo {
