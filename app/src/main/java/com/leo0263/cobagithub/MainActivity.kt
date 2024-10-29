@@ -16,9 +16,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.leo0263.cobagithub.helper.UserRepository
 import com.leo0263.cobagithub.network.ApolloClientInstance
 import com.leo0263.cobagithub.network.GitHubServiceImpl
@@ -55,6 +57,15 @@ class MainActivity : ComponentActivity() {
                         composable(homeTab.title) { HomeScreen(homeViewModel, navController) }
                         composable(searchTab.title) { Text(searchTab.title) } // TODO: create search view
                         composable(favoritesTab.title) { Text(favoritesTab.title) } // TODO: create favorite view
+                        composable(
+                            route = "detail/{login}",
+                            arguments = listOf(
+                                navArgument("login") { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            val login = backStackEntry.arguments?.getString("login") ?: ""
+                            Text("User Detail ($login)")
+                        } // TODO: create user detail view
                     }
                 }
             }

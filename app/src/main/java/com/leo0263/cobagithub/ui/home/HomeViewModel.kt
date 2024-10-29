@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
+class HomeViewModel(
+    private val userRepository: UserRepository
+) : ViewModel() {
 
-    private var _state = MutableStateFlow<HomeUiState>(HomeUiState())
+    private var _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
 
 //    fun addToFavorite(id: String, username: String, avatarUrl: String) {
