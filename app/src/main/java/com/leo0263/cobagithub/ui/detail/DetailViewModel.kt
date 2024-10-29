@@ -27,26 +27,27 @@ class DetailViewModel(
                 if (response.data != null) {
                     val user = (response.data?.repositoryOwner?.onUser)
                     Log.d("dangdut", "user = $user")
-                    _state.update {
-                        DetailUiState(
-                            isLoading = false,
-                            isError = false,
-                            userDetail = user?.let { user ->
-                                GitHubUserDetail(
-                                    id = user.id,
-                                    avatarUrl = user.avatarUrl.toString(),
-                                    name = user.name ?: "",
-                                    login = user.login,
-                                    bio = user.bio ?: "",
-                                    company = user.company ?: "",
-                                    followers = user.followers.totalCount,
-                                    following = user.following.totalCount,
-                                    starredRepositories = user.starredRepositories.totalCount,
-                                    repositoriesCount = user.repositories.totalCount,
-                                    repositories = user.repositories
-                                )
-                            }
-                        )
+                    if (user != null) {
+                        _state.update {
+                            DetailUiState(
+                                isLoading = false,
+                                isError = false,
+                                userDetail =
+                                    GitHubUserDetail(
+                                        id = user.id,
+                                        avatarUrl = user.avatarUrl.toString(),
+                                        name = user.name ?: "",
+                                        login = user.login,
+                                        bio = user.bio ?: "",
+                                        company = user.company ?: "",
+                                        followers = user.followers.totalCount,
+                                        following = user.following.totalCount,
+                                        starredRepositories = user.starredRepositories.totalCount,
+                                        repositoriesCount = user.repositories.totalCount,
+                                        repositories = user.repositories
+                                    )
+                            )
+                        }
                     }
                 } else {
                     Log.e("API Error", response.errors.toString())

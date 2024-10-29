@@ -17,9 +17,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -71,24 +76,27 @@ fun DetailScreen(
                     UserRepositoriesList(state)
                 }
             }
-
         }
     }
 }
 
 @Composable
 fun UserDetail(state: DetailUiState) {
+    val followers: String = state.userDetail.followers.toString()
+    val following: String = state.userDetail.following.toString()
+
     Box (
         modifier = Modifier
+            .fillMaxWidth()
             .background(Color.LightGray)
     ) {
         Column (
             modifier = Modifier
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 2.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp)
         ) {
             Row {
                 AsyncImage(
-                    model = state.userDetail?.avatarUrl,
+                    model = state.userDetail.avatarUrl,
                     contentDescription = "User Avatar",
                     modifier = Modifier
                         .size(128.dp)
@@ -97,19 +105,42 @@ fun UserDetail(state: DetailUiState) {
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        state.userDetail?.login ?: "",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        state.userDetail.login,
+                        style = MaterialTheme.typography.headlineMedium,
                     )
-                    Text(state.userDetail?.name ?: "", fontSize = 16.sp)
-                    Text(state.userDetail?.followers.toString(), fontSize = 14.sp)
-                    Text(state.userDetail?.following.toString(), fontSize = 14.sp)
-                    Text(state.userDetail?.starredRepositories.toString(), fontSize = 14.sp)
-                    Text(state.userDetail?.company ?: "", fontSize = 14.sp)
-                    Text(state.userDetail?.location ?: "", fontSize = 14.sp)
+                    Text(state.userDetail.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = Color.Gray
+                    )
+                    Text(
+                        "$followers followers | $following following",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        "${state.userDetail.starredRepositories} total stars",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    if (state.userDetail.company != "") {
+                        Row {
+                            Icon(Icons.Default.Home, "company", Modifier.size(16.dp))
+                            Text(
+                                state.userDetail.company,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
+                    if (state.userDetail.location != "") {
+                        Row {
+                            Icon(Icons.Default.LocationOn, "location", Modifier.size(16.dp))
+                            Text(
+                                state.userDetail.location,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
                 }
             }
-            if (state.userDetail?.bio != null && state.userDetail.bio != "") {
+            if (state.userDetail.bio != "") {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(state.userDetail.bio, fontSize = 14.sp)
             }
@@ -150,10 +181,21 @@ fun RepositoryItem(node: UserDetailQuery.Node) {
                 }
             }
     ) {
-        Text(
-            text = node.name,
-            style = MaterialTheme.typography.headlineSmall
-        )
+        Row (
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = node.name,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(Icons.Default.Star, "stars", Modifier.size(16.dp))
+            Text(
+                text = "${node.stargazers.totalCount}",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+        }
 
         node.primaryLanguage?.let { language ->
             Text(
@@ -162,12 +204,6 @@ fun RepositoryItem(node: UserDetailQuery.Node) {
                 color = Color.Gray
             )
         }
-
-        Text(
-            text = "Stars: ${node.stargazers.totalCount}",
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray
-        )
 
         node.description?.let { description ->
             Text(
