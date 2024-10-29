@@ -27,9 +27,12 @@ import com.leo0263.cobagithub.network.GitHubServiceImpl
 import com.leo0263.cobagithub.ui.theme.CobaGithubTheme
 import com.leo0263.cobagithub.ui.bottomnav.BottomNavItem
 import com.leo0263.cobagithub.ui.bottomnav.BottomNavigationBarView
+import com.leo0263.cobagithub.ui.detail.DetailScreen
+import com.leo0263.cobagithub.ui.detail.DetailViewModel
 import com.leo0263.cobagithub.ui.home.HomeScreen
 import com.leo0263.cobagithub.ui.home.HomeViewModel
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,6 +51,7 @@ class MainActivity : ComponentActivity() {
             CobaGithubTheme {
                 val userRepository = UserRepository(this.application)
                 val homeViewModel = HomeViewModel(userRepository)
+                val detailViewModel = DetailViewModel(userRepository)
 
                 Scaffold(
                     bottomBar = { BottomNavigationBarView(bottomNavItems, navController) },
@@ -64,8 +68,8 @@ class MainActivity : ComponentActivity() {
                             )
                         ) { backStackEntry ->
                             val login = backStackEntry.arguments?.getString("login") ?: ""
-                            Text("User Detail ($login)")
-                        } // TODO: create user detail view
+                            DetailScreen(detailViewModel, login)
+                        }
                     }
                 }
             }

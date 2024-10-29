@@ -34,7 +34,8 @@ class HomeViewModel(
         val query = 'a'.toString() // TODO: update this random query logic
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val favoriteUserIds = userRepository.getAllFavoriteUserIds()
+                //TODO: val favoriteUserIds = userRepository.getAllFavoriteUserIds()
+                val favoriteUserIds: List<String> = emptyList()
                 val response = userRepository.getSearchUser(query, null)
                 if (response.data != null) {
                     val fetchedUsers = response.data?.search?.edges?.mapNotNull { it?.node?.onUser } ?: emptyList()
@@ -73,9 +74,9 @@ class HomeViewModel(
                         isError = false,
                         randomUser = GitHubUser(
                             id = randomUser?.id ?: "",
-                            name = randomUser?.login ?: "",
+                            name = randomUser?.name ?: "",
                             avatarUrl = randomUser?.avatarUrl.toString(),
-                            login = randomUser?.name ?: "",
+                            login = randomUser?.login ?: "",
                             bio = randomUser?.bio ?: "",
                             company = randomUser?.company ?: "",
                             followers = randomUser?.followers?.totalCount ?: 0,

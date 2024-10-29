@@ -22,18 +22,20 @@ class DetailViewModel(
         isLoading()
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                Log.d("dangdut", "getUserDetail()!")
                 val response = userRepository.getUserDetail(userLogin)
                 if (response.data != null) {
                     val user = (response.data?.repositoryOwner?.onUser)
+                    Log.d("dangdut", "user = $user")
                     _state.update {
                         DetailUiState(
                             isLoading = false,
                             isError = false,
                             userDetail = GitHubUser(
                                 id = user?.id ?: "",
-                                name = user?.login ?: "",
+                                name = user?.name ?: "",
                                 avatarUrl = user?.avatarUrl.toString(),
-                                login = user?.name ?: "",
+                                login = user?.login ?: "",
                                 bio = user?.bio ?: "",
                                 company = user?.company ?: "",
                                 followers = user?.followers?.totalCount ?: 0,

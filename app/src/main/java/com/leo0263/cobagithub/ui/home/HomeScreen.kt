@@ -1,5 +1,6 @@
 package com.leo0263.cobagithub.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
+import kotlin.math.log
 
 @Composable
 fun HomeScreen(
@@ -82,13 +84,14 @@ fun UserPortrait(state: HomeUiState, onClick: () -> Unit = {}) {
                 .clip(CircleShape)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(state.randomUser?.name ?: "", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text(state.randomUser?.login ?: "", fontSize = 16.sp)
+        Text(state.randomUser?.login ?: "", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(state.randomUser?.name ?: "", fontSize = 16.sp)
         Text(state.randomUser?.company ?: "", fontSize = 14.sp)
         Text(state.randomUser?.location ?: "", fontSize = 14.sp)
     }
 }
 
 fun navigateToDetail(navController: NavHostController, login: String) {
+    Log.d("dangdut", "navigate -> (${login})!")
     navController.navigate("detail/$login")
 }
