@@ -3,7 +3,7 @@ package com.leo0263.cobagithub.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leo0263.cobagithub.helper.GitHubUser
+import com.leo0263.cobagithub.helper.GitHubUserDetail
 import com.leo0263.cobagithub.helper.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,24 +65,22 @@ class HomeViewModel(
 
     private suspend fun refreshUserDetail(username: String) {
         try {
-            val response = userRepository.getUserDetail(username)
+            val response = userRepository.getUserProfile(username)
             if (response.data != null) {
                 val randomUser = (response.data?.repositoryOwner?.onUser)
                 _state.update { currentState ->
                     currentState.copy(
                         isLoading = false,
                         isError = false,
-                        randomUser = GitHubUser(
-                            id = randomUser?.id ?: "",
-                            name = randomUser?.name ?: "",
-                            avatarUrl = randomUser?.avatarUrl.toString(),
-                            login = randomUser?.login ?: "",
-                            bio = randomUser?.bio ?: "",
-                            company = randomUser?.company ?: "",
-                            followers = randomUser?.followers?.totalCount ?: 0,
-                            following = randomUser?.following?.totalCount ?: 0,
-                            starredRepositories = randomUser?.starredRepositories?.totalCount ?: 0,
-                        )
+                        randomUser = randomUser?.let {
+                            GitHubUserDetail(
+                                id = randomUser.id,
+                                name = randomUser.name ?: "",
+                                avatarUrl = randomUser.avatarUrl.toString(),
+                                login = randomUser.login,
+                                bio = randomUser.bio ?: "",
+                            )
+                        }
                     )
                 }
 

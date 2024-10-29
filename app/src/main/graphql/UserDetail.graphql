@@ -8,14 +8,28 @@ query UserDetail($login:String!){
             bio
             company
             location
-            starredRepositories(first:10){
+            followers {
                 totalCount
             }
-            followers(first:10){
+            following {
                 totalCount
             }
-            following(first:10){
+            starredRepositories {
                 totalCount
+            }
+            repositories(first: 100, ownerAffiliations: OWNER, isFork: false) {
+                  totalCount
+                  nodes {
+                    name
+                    primaryLanguage {
+                        name
+                    }
+                    stargazers {
+                        totalCount
+                    }
+                    description
+                    url
+                  }
             }
         }
     }

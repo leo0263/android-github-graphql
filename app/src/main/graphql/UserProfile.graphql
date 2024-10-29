@@ -1,0 +1,11 @@
+query UserProfile($login:String!){
+    repositoryOwner(login: $login) {
+        ... on User {
+            id
+            avatarUrl
+            name
+            login
+            bio
+        }
+    }
+}

@@ -3,7 +3,7 @@ package com.leo0263.cobagithub.ui.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leo0263.cobagithub.helper.GitHubUser
+import com.leo0263.cobagithub.helper.GitHubUserDetail
 import com.leo0263.cobagithub.helper.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,17 +31,21 @@ class DetailViewModel(
                         DetailUiState(
                             isLoading = false,
                             isError = false,
-                            userDetail = GitHubUser(
-                                id = user?.id ?: "",
-                                name = user?.name ?: "",
-                                avatarUrl = user?.avatarUrl.toString(),
-                                login = user?.login ?: "",
-                                bio = user?.bio ?: "",
-                                company = user?.company ?: "",
-                                followers = user?.followers?.totalCount ?: 0,
-                                following = user?.following?.totalCount ?: 0,
-                                starredRepositories = user?.starredRepositories?.totalCount ?: 0,
-                            )
+                            userDetail = user?.let { user ->
+                                GitHubUserDetail(
+                                    id = user.id,
+                                    avatarUrl = user.avatarUrl.toString(),
+                                    name = user.name ?: "",
+                                    login = user.login,
+                                    bio = user.bio ?: "",
+                                    company = user.company ?: "",
+                                    followers = user.followers.totalCount,
+                                    following = user.following.totalCount,
+                                    starredRepositories = user.starredRepositories.totalCount,
+                                    repositoriesCount = user.repositories.totalCount,
+                                    repositories = user.repositories
+                                )
+                            }
                         )
                     }
                 } else {

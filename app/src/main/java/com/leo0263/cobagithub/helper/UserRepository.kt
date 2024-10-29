@@ -4,6 +4,7 @@ import android.app.Application
 import com.apollographql.apollo.api.ApolloResponse
 import com.leo0263.cobagithub.SearchUsersQuery
 import com.leo0263.cobagithub.UserDetailQuery
+import com.leo0263.cobagithub.UserProfileQuery
 import com.leo0263.cobagithub.network.ApolloClientInstance
 import com.leo0263.cobagithub.network.GitHubServiceImpl
 
@@ -23,6 +24,10 @@ class UserRepository(application: Application) {
 
     suspend fun getUserDetail(username: String): ApolloResponse<UserDetailQuery.Data> {
         return githubService.fetchUserDetail(username)
+    }
+
+    suspend fun getUserProfile(username:String): ApolloResponse<UserProfileQuery.Data> {
+        return githubService.fetchUserProfile(username)
     }
 
 //    suspend fun checkUser(id: String): Int {
