@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
-import kotlin.math.log
 
 @Composable
 fun HomeScreen(
@@ -36,7 +35,7 @@ fun HomeScreen(
     navController: NavHostController,
 ) {
     val state by viewModel.state.collectAsState()
-    
+
     LaunchedEffect(Unit) {
         viewModel.getRandomUser()
     }
@@ -70,7 +69,7 @@ fun HomeScreen(
 
 @Composable
 fun UserPortrait(state: HomeUiState, onClick: () -> Unit = {}) {
-    Column (
+    Column(
         modifier = Modifier
             .clickable { onClick() }
             .padding(16.dp),

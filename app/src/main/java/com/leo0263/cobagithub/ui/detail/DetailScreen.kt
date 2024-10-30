@@ -92,7 +92,7 @@ fun UserDetail(state: DetailUiState) {
     ) {
         Column (
             modifier = Modifier
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp)
+                .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
         ) {
             Row {
                 AsyncImage(
@@ -150,7 +150,7 @@ fun UserDetail(state: DetailUiState) {
 
 @Composable
 fun UserRepositoriesList(state: DetailUiState) {
-    val nodes = state.userDetail?.repositories?.nodes ?: emptyList()
+    val nodes = state.userDetail.repositories?.nodes ?: emptyList()
 
     if (nodes.isNotEmpty()) {
         Box {

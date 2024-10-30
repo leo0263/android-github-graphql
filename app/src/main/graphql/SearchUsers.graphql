@@ -3,18 +3,11 @@ query SearchUsers($q: String!, $after: String) {
         edges {
             node {
                 ... on User {
-                    avatarUrl
                     id
+                    avatarUrl
                     login
-                    url
                     name
                     bio
-                    followers{
-                        totalCount
-                    }
-                    following{
-                        totalCount
-                    }
                 }
             }
         }

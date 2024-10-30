@@ -2,7 +2,6 @@ package com.leo0263.cobagithub
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,24 +14,21 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.leo0263.cobagithub.helper.UserRepository
-import com.leo0263.cobagithub.network.ApolloClientInstance
-import com.leo0263.cobagithub.network.GitHubServiceImpl
-import com.leo0263.cobagithub.ui.theme.CobaGithubTheme
 import com.leo0263.cobagithub.ui.bottomnav.BottomNavItem
 import com.leo0263.cobagithub.ui.bottomnav.BottomNavigationBarView
 import com.leo0263.cobagithub.ui.detail.DetailScreen
 import com.leo0263.cobagithub.ui.detail.DetailViewModel
 import com.leo0263.cobagithub.ui.home.HomeScreen
 import com.leo0263.cobagithub.ui.home.HomeViewModel
-import kotlinx.coroutines.launch
-import kotlin.math.log
+import com.leo0263.cobagithub.ui.search.SearchScreen
+import com.leo0263.cobagithub.ui.search.SearchViewModel
+import com.leo0263.cobagithub.ui.theme.CobaGithubTheme
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,6 +48,7 @@ class MainActivity : ComponentActivity() {
                 val userRepository = UserRepository(this.application)
                 val homeViewModel = HomeViewModel(userRepository)
                 val detailViewModel = DetailViewModel(userRepository)
+                val searchViewModel = SearchViewModel(userRepository)
 
                 Scaffold(
                     bottomBar = { BottomNavigationBarView(bottomNavItems, navController) },
@@ -59,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(navController = navController, startDestination = homeTab.title, Modifier.padding(innerPadding)) {
                         composable(homeTab.title) { HomeScreen(homeViewModel, navController) }
-                        composable(searchTab.title) { Text(searchTab.title) } // TODO: create search view
+                        composable(searchTab.title) { SearchScreen(searchViewModel, navController) } // TODO: create search view
                         composable(favoritesTab.title) { Text(favoritesTab.title) } // TODO: create favorite view
                         composable(
                             route = "detail/{login}",
