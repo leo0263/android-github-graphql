@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,6 +12,10 @@ android {
     namespace = "com.leo0263.cobagithub"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.leo0263.cobagithub"
         minSdk = 24
@@ -18,6 +24,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "GITHUB_TOKEN", gradleLocalProperties(rootDir, providers).getProperty("GITHUB_TOKEN"))
     }
 
     buildTypes {
