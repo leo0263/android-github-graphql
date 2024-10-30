@@ -31,7 +31,7 @@ class HomeViewModel(
     fun getRandomUser() {
         isLoading()
         Log.d("dangdut", "getRandomUser()!")
-        val query = 'a'.toString() // TODO: update this random query logic
+        val query = ('a'..'z').random().toString() + ' ' + ('a'..'z').random().toString()
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 //TODO: val favoriteUserIds = userRepository.getAllFavoriteUserIds()
@@ -41,11 +41,11 @@ class HomeViewModel(
                     val fetchedUsers = response.data?.search?.edges?.mapNotNull { it?.node?.onUser } ?: emptyList()
                     val filteredUsers = fetchedUsers.filterNot { fetchedUser ->
                         favoriteUserIds.any { favoriteUserId ->
-                            fetchedUser.id == favoriteUserId.toString()
+                            fetchedUser.id == favoriteUserId
                         }
                     }
                     if (filteredUsers.isNotEmpty()) {
-                        Log.d("dangdut", "$query (${filteredUsers.count()})")
+                        Log.d("dangdut", "query ($query) got (${filteredUsers.count()})")
                         val randomUser = filteredUsers.random()
                         refreshUserDetail(randomUser.login)
                     } else {
